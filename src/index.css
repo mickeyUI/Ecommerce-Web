@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #00072d;
+  color: white;
+}
+:root {
+  --color-primary: #1d2d44;    
+  --color-secondary: #0a2472;  
+  --color-bg: #00072d;       
+  --color-highlight: #0e6ba8;
+  --color-ternary: #0d162bd2;        
+}
+
+.transition-input {
+  transition: width 0.2s ease-in-out;
+}
+
+.sticky-div {
+      position: sticky;
+      bottom: 10px;
+       /* This specifies the threshold at which the div will stick *//* Add a background color to make it visible */
+    }

@@ -1,0 +1,20 @@
+[
+    {
+    "number": 1,
+    "heading": "Wireless Headphones ",
+    "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=80",
+    "description": "Noise-cancelling over-ear headphones are the number 1 selling products right now check it out"
+  },
+  {
+    "number":2,
+    "heading": "Running Shoes",
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80",
+    "description": "they have halved there prduct and can get 3 in 1. about to sellout! go and buy right now"
+  },
+  {
+    "number":2,
+    "heading": "Gaming setup",
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80",
+    "description": "they have halved there prduct and can get 3 in 1. about to sellout! go and buy right now"
+  }
+]

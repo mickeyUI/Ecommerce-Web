@@ -8,9 +8,9 @@ function ProductCard({
     category
 }) {
     return (
-        <div key={idx} className="flex flex-col shadow-2xl bg-primary shadow-2xl shadow-black rounded-2xl w-auto hover:shadow-white/10 transition-transform duration-500 ease-in-out transform  hover:-translate-y-2" >
-            <div className="h-52 w-80 m-3 shadow-md overflow-hidden rounded-2xl bg-white">
-                <img src={image} alt="image"  className="h-auto w-auto"/>
+        <div key={idx} className="flex flex-col shadow-2xl bg-primary shadow-2xl shadow-black rounded-2xl  w-auto hover:shadow-white/10 transition-transform duration-500 ease-in-out transform  hover:-translate-y-2" >
+            <div className=" w-auto h-52 m-3 shadow-md overflow-hidden rounded-2xl bg-primary">
+                <img src={image} alt="image"  className=" w-auto"/>
             </div>
             {/* descriptions */}
             <div className="flex flex-col gap-2 p-4 bg-ternary rounded-b-2xl">

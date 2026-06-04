@@ -7,27 +7,49 @@ import {ArrowRight, ArrowLeft, Search} from 'lucide-react'
 import Cart from './Cart'
 function Home() {
     const [bannerItem, setBannerItem] = useState({});
-    const [itemNumb, setItemNumb] = useState(0);
+    const [itemNumb, setItemNumb] = useState(1);
+    const nextItem = () => {
+            setItemNumb(prev => {
+                return prev < BannerItems.length? prev + 1: 1;
+            });
+        
+    }
+     const privItem = () => {
+         setItemNumb(prev => {
+                return prev > 1? prev + 1: BannerItems.length;
+            });
+    }
+    useEffect(() => {
+  const interval = setInterval(() => {
+    nextItem();
+  }, 10000);
+
+  return () => clearInterval(interval);
+}, []);
 
     useEffect(() => {
-        setBannerItem(BannerItems.find(item => item.number == itemNumb) || {"number":1, "heading":"h", "image": "2","description":"dd"});
+        setBannerItem(BannerItems.find(item => item?.number == itemNumb));
     }, [itemNumb]);
     return (
         <div className="flex flex-col p-5">
             {/* banner controls plus the actual banner */}
             <div className='flex w-full justify-center rounded-2xl gap-5'>
                 <div className='flex justify-center items-center'>
-            <ArrowLeft className='bg-white/30 rounded-2xl p-3 w-14 h-14 shadow-2xl hover:bg-white/50'/>
+            <ArrowLeft 
+            onClick={privItem}
+            className='bg-white/30 rounded-2xl p-3 w-14 h-14 shadow-2xl hover:bg-white/50'/>
                 </div>
              {
                 <Banner
                 itemNumber={bannerItem.number}
                 heading={bannerItem.heading}
                 img={bannerItem.image}
-                description={bannerItem.discription}/>
+                description={bannerItem.description}/>
             } 
             <div className='flex justify-center items-center'>
-                <ArrowRight className='bg-white/30 rounded-2xl p-3 w-14 h-14 shadow-2xl hover:bg-white/50'/>
+                <ArrowRight
+                onClick={nextItem} 
+                className='bg-white/30 rounded-2xl p-3 w-14 h-14 shadow-2xl hover:bg-white/50'/>
             </div>
             </div>
 
@@ -60,7 +82,7 @@ function Home() {
                 {Products.map((product) => {
                     return(
                     <ProductCard 
-                    idx={product.id}
+                    key={product.id}
                     image={product.image}
                     name={product.name}
                     discription={product.description}

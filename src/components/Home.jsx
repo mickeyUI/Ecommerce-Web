@@ -3,11 +3,16 @@ import Banner from './Banner'
 import ProductCard from './ProductCard'
 import Products from '../products/products.json'
 import BannerItems from '../products/BannerItems.json'
-import {ArrowRight, ArrowLeft, Search} from 'lucide-react'
+import {ArrowRight, ArrowLeft, Search, ShoppingBagIcon} from 'lucide-react'
 import Cart from './Cart'
+import { useCart } from './Context';
 function Home() {
+    const {cart} = useCart();
+
     const [bannerItem, setBannerItem] = useState({});
     const [itemNumb, setItemNumb] = useState(1);
+    const [activeCart, setActiveCart] = useState(false);
+
     const nextItem = () => {
             setItemNumb(prev => {
                 return prev < BannerItems.length? prev + 1: 1;
@@ -23,13 +28,22 @@ function Home() {
   const interval = setInterval(() => {
     nextItem();
   }, 10000);
-
   return () => clearInterval(interval);
 }, []);
 
     useEffect(() => {
         setBannerItem(BannerItems.find(item => item?.number == itemNumb));
     }, [itemNumb]);
+
+    useEffect(() => {
+        if (!activeCart) return;
+
+        const timer = setTimeout(() => {
+            setActiveCart(false);
+        }, 10000);
+        return () => clearTimeout(timer);
+      
+    }, [activeCart, cart.length]);
     return (
         <div className="flex flex-col p-5">
             {/* banner controls plus the actual banner */}
@@ -83,6 +97,7 @@ function Home() {
                     return(
                     <ProductCard 
                     key={product.id}
+                    idx={product.id}
                     image={product.image}
                     name={product.name}
                     discription={product.description}
@@ -90,9 +105,16 @@ function Home() {
                     category={product.category}
                     />)
                 })}
-                <div className='flex justify-end col-start-4 sticky-div'>
-
-                <Cart/>
+                <div className='flex justify-end col-start-4 sticky-div transition-transform duration-1000 ease-in-out transform'>
+                {activeCart? <Cart/>
+            :<div onClick={() => {setActiveCart(true)}} className="  bg-yellow-600  flex gap-4 px-5 py-3 rounded-2xl shadow-2xl shadow-black">
+            <ShoppingBagIcon className='font-bold '/>
+            <h1 className='font-bold text-2xl'>Cart</h1>
+            {cart.length > 0 &&
+            <div className='bg-red-700 rounded-2xl px-3 p-1 absolute -top-3 -right-3'>{cart.length}</div>
+            }
+        </div>}
+                
                 </div>
             </main>
         </div>

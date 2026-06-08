@@ -29,21 +29,14 @@ function Home() {
     nextItem();
   }, 10000);
   return () => clearInterval(interval);
-}, []);
+    }, []);
 
     useEffect(() => {
         setBannerItem(BannerItems.find(item => item?.number == itemNumb));
     }, [itemNumb]);
+    
 
-    useEffect(() => {
-        if (!activeCart) return;
 
-        const timer = setTimeout(() => {
-            setActiveCart(false);
-        }, 10000);
-        return () => clearTimeout(timer);
-      
-    }, [activeCart, cart.length]);
     return (
         <div className="flex flex-col p-5">
             {/* banner controls plus the actual banner */}

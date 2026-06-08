@@ -15,7 +15,7 @@ function Cart() {
 
             <BrushCleaningIcon
             onClick={clearCart}
-             className='rounded-2xl h-9' />
+             className='rounded-2xl  h-9' />
                 </div>
             </div>
             <div className='items-list  flex flex-col gap-2 max-h-72 overflow-auto custom-scrollbar '>

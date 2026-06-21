@@ -1,5 +1,5 @@
 from DB import Base
-from sqlalchemy import Column, Integer, String, Float, Text, Path, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, Text, ForeignKey
 
 
 
@@ -10,8 +10,9 @@ class Products(Base):
     description = Column(Text, nullable= True)
     category = Column(String, nullable= False)
     brand = Column(String, nullable= False)
-    image = Column(Path, nullable= False)
+    image = Column(String, nullable= False)
     price = Column(Float, nullable= False)
+    rating = Column(Float, nullable=True)
 
 class Inventory(Base):
     __tablename__ = "Inventory"

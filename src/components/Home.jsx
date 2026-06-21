@@ -1,18 +1,20 @@
 import {useState, useEffect} from 'react'
 import Banner from './Banner'
 import ProductCard from './ProductCard'
-import Products from '../products/products.json'
 import BannerItems from '../products/BannerItems.json'
 import {ArrowRight, ArrowLeft, Search, ShoppingBagIcon} from 'lucide-react'
 import Cart from './Cart'
 import { useCart } from './Context';
 function Home() {
-    const {cart} = useCart();
+    const {cart, Products, categories} = useCart();
 
     const [bannerItem, setBannerItem] = useState({});
     const [itemNumb, setItemNumb] = useState(1);
     const [activeCart, setActiveCart] = useState(false);
+    const [filter, setFilter] = useState("All");
+    const [filteredProducts, setFilteredProducts] = useState(Products);
 
+    //banner controls
     const nextItem = () => {
             setItemNumb(prev => {
                 return prev < BannerItems.length? prev + 1: 1;
@@ -21,7 +23,7 @@ function Home() {
     }
      const privItem = () => {
          setItemNumb(prev => {
-                return prev > 1? prev + 1: BannerItems.length;
+                return prev > 1? prev - 1: BannerItems.length;
             });
     }
     useEffect(() => {
@@ -30,11 +32,19 @@ function Home() {
   }, 10000);
   return () => clearInterval(interval);
     }, []);
-
     useEffect(() => {
         setBannerItem(BannerItems.find(item => item?.number == itemNumb));
     }, [itemNumb]);
     
+    //filtering and searching
+    const handleFilterChange = (event) => {
+        setFilter(event.target.value);
+
+    };
+    useEffect(() => {
+        const filterProducts = filter == "All"? Products: Products.filter(product => product.category == filter);
+        setFilteredProducts(filterProducts);
+    }, [filter, Products]);
 
 
     return (
@@ -65,10 +75,13 @@ function Home() {
                 {/* filtering */}
                 <div className='flex gap-2 '>
                     <h1 className='text-white text-2xl '>Filter</h1>
-                <select name="Category " className='bg-secondary border-2 rounded-2xl p-1 pr-2 pl-2 focus:rounded-2xl focus-outline-none' >
+                <select name="Category " className='bg-secondary border-2 rounded-2xl p-1 pr-2 pl-2 focus:rounded-2xl focus-outline-none' value={filter} onChange={handleFilterChange}>
                     <option value="All">None</option>
-                    <option value="">Electronics</option>
-                    <option value="">Cloth</option>
+                    {categories.map((category, index) => (
+                        <option key={index} value={category}>
+                            {category}
+                        </option>
+                    ))}
                 </select>
                 <select name="Price " className='bg-secondary border-2 rounded-2xl p-1 pr-2 pl-2 focus:rounded-2xl focus-outline-none' >
                     <option value="All">All Price</option>
@@ -86,7 +99,7 @@ function Home() {
             </div>
 
             <main className=' w-full grid grid-cols-4 gap-5 '>
-                {Products.map((product) => {
+                {filteredProducts.map((product) => {
                     return(
                     <ProductCard 
                     key={product.id}
@@ -98,7 +111,8 @@ function Home() {
                     category={product.category}
                     />)
                 })}
-                <div className='flex justify-end col-start-4 sticky-div transition-transform duration-1000 ease-in-out transform'>
+            </main>
+                <div className='flex justify-end sticky-div transition-transform duration-1000 ease-in-out transform'>
                 {activeCart? <Cart/>
             :<div onClick={() => {setActiveCart(true)}} className="  bg-yellow-600  flex gap-4 px-5 py-3 rounded-2xl shadow-2xl shadow-black">
             <ShoppingBagIcon className='font-bold '/>
@@ -109,7 +123,6 @@ function Home() {
         </div>}
                 
                 </div>
-            </main>
         </div>
     )
 }

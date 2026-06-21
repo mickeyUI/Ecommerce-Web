@@ -1,14 +1,40 @@
 import { createContext, useContext, useState, useMemo, useEffect } from 'react';
-import Products from '../products/products.json';
+import {api} from '../products/api';
 
 
 // 1. Your context object is named CartContext
 const CartContext = createContext(undefined);
 
 export function ContextProvider({ children }) {
+
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState();
+  const [Products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  
 
+  const fetchProducts = async () => {
+    try {
+      const data = await api.getNotes();
+      setProducts(data);
+      console.log('Products fetched successfully:', data);
+      if (data.length > 0) {
+        const lstOfCategories = data.map(product => product.category);
+        const uniqueCategories = new Set(lstOfCategories);
+        setCategories([...uniqueCategories]);
+        console.log(uniqueCategories);
+      } else {
+        console.log('No products found in the response.');
+      }
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  }
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  
   const addToCart = (id) => {
     const product= Products.find(item => item.id == id);
     setCart(prev => {
@@ -44,7 +70,7 @@ export function ContextProvider({ children }) {
 
   return (
    
-    <CartContext.Provider value={{cart, total, addToCart, removeFromCart, clearCart, purchase}}>
+    <CartContext.Provider value={{Products: Products,categories, cart, total, addToCart, removeFromCart, clearCart, purchase}}>
       {children}
     </CartContext.Provider>
   );

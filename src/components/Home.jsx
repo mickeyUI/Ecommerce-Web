@@ -12,6 +12,7 @@ function Home() {
     const [itemNumb, setItemNumb] = useState(1);
     const [activeCart, setActiveCart] = useState(false);
     const [filter, setFilter] = useState("All");
+    const [query, setQuery] = useState("");
     const [filteredProducts, setFilteredProducts] = useState(Products);
 
     //banner controls
@@ -46,7 +47,14 @@ function Home() {
         setFilteredProducts(filterProducts);
     }, [filter, Products]);
 
-
+    useEffect(() => {
+        const handleSeach = () => {
+            const searchFilterProducts = Products.filter(product => product.name.toLowerCase().includes(query.toLowerCase()))
+            setFilteredProducts(searchFilterProducts);
+        }
+        handleSeach();
+        console.log(query);
+    }, [query]);
     return (
         <div className="flex flex-col p-5">
             {/* banner controls plus the actual banner */}
@@ -83,15 +91,13 @@ function Home() {
                         </option>
                     ))}
                 </select>
-                <select name="Price " className='bg-secondary border-2 rounded-2xl p-1 pr-2 pl-2 focus:rounded-2xl focus-outline-none' >
-                    <option value="All">All Price</option>
-                    <option value="">200birr-500birr</option>
-                    <option value="">500birr-1,000birr</option>
-                </select>
                 </div>
                 {/* search */}
                 <div className='flex gap-2'>
-                <input className=' rounded-2xl w-64 focus:w-full transition-input text-white/90 bg-white/30 border-white border-2 pl-2' type="text" />
+                <input
+                value= {query}
+                onChange={(e) => setQuery(e.target.value)} 
+                className=' rounded-2xl w-64 focus:w-full transition-input text-white/90 bg-white/30 border-white border-2 pl-2' type="text" />
                 <button className='hover:bg-white/20 rounded-2xl'>
                     <Search className='text-white h-6 w-6 m-2'/>
                 </button>
